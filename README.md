@@ -11,6 +11,8 @@ It has no dependencies and fits in one C file, suitable for embbeding in constra
 git clone https://github.com/projectiota/jsmnrpc && cd jsmnrpc
 make
 ```
+Static library `libjsmnrpc.a` will be created.
+
 ### Build Example and Test
 ```bash
 make test
