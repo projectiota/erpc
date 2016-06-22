@@ -12,7 +12,7 @@ However, we do not include Jsmn code in Jsmnrpc repo (not even as a submodule) a
 
 In the case that you are buiding Jsmrpc independantly and out of the build system which has Jsmn installed (for example if you just cloned this repo to your PC), you will have to fetch and build Jsmn by hand.
 
-Good news is this is quick and easy procedure:
+Good news is that this is really simple:
 ```bash
 git clone https://github.com/zserge/jsmn
 make -C ./jsmn
