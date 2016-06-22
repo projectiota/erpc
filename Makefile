@@ -6,6 +6,8 @@
 # See the included LICENSE file for more details.
 ##
 
+JSMNDIR = ../jsmn
+
 SRCDIR = src
 INCDIR = inc
 OBJDIR = obj
@@ -28,14 +30,14 @@ $(TARGET) : $(OBJ)
  
 $(OBJ): $(OBJDIR)/libjsmnrpc/%.o : $(SRCDIR)/%.c
 	mkdir -p $(OBJDIR)/libjsmnrpc
-	$(CC) $(CFLAGS) -I$(INCDIR)  -I../jsmn -c -o $@ $<
+	$(CC) $(CFLAGS) -I$(INCDIR)  -I$(JSMNDIR) -c -o $@ $<
 
 test: $(OBJDIR)/examples/test.o
-	$(CC) $(LDFLAGS) $^ -o $@ -ljsmnrpc -ljsmn -L. -L../jsmn
+	$(CC) $(LDFLAGS) $^ -o $@ -ljsmnrpc -L. -ljsmn -L$(JSMNDIR)
 
 $(OBJDIR)/examples/test.o: examples/test.c
 	mkdir -p $(OBJDIR)/examples
-	$(CC) $(CFLAGS) -I$(INCDIR) -I../jsmn -c -o $@ $<
+	$(CC) $(CFLAGS) -I$(INCDIR) -I$(JSMNDIR) -c -o $@ $<
  
 .PHONY : clean
 clean:
