@@ -26,7 +26,7 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	return -1;
 }
 
-int jrpcCall(char* req, char* rsp)
+int jrpcCall(const char* req, char* rsp)
 {
     int i;
 	int r;
