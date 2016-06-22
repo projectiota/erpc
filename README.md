@@ -7,7 +7,6 @@ It has no dependencies and fits in one C file, suitable for embbeding in constra
 ```bash
 # Clone the repo
 git clone https://github.com/projectiota/jsmnrpc && cd jsmnrpc
-
 make
 ```
 
