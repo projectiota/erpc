@@ -9,8 +9,6 @@
 #ifndef JSMNRPC_H
 #define JSMNRPC_H
 
-#include "jsmn.h"
-
 int jrpcCall(const char* req, char* rsp);
 
 #endif /** JSMNRPC_H */

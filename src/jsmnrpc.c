@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "jsmn.h"
 #include "jsmnrpc.h"
 
 #define JSONRPC_MAGIC_KEY "jsonrpc"
