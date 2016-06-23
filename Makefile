@@ -6,7 +6,7 @@
 # See the included LICENSE file for more details.
 ##
 
-JSMNDIR = ../jsmn
+JSMNDIR = ./jsmn
 
 SRCDIR = src
 INCDIR = inc
@@ -14,8 +14,13 @@ OBJDIR = obj
 
 SRC = $(wildcard $(SRCDIR)/*.c)
 INC = $(wildcard $(INCDIR)/*.h)
+
+JSMNSRC = $(wildcard $(JSMNDIR)/*.c)
+JSMNINC = $(wildcard $(JSMNDIR)/*.h)
  
-OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/libjsmnrpc/%.o)
+OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/jsmnrpc/%.o)
+JSMNOBJ = $(JSMNSRC:$(JSMNDIR)/%.c=$(OBJDIR)/jsmn/%.o)
+
 TARGET = libjsmnrpc.a
  
 CC := gcc
@@ -25,15 +30,19 @@ LDFLAGS = $(LIBS:%=-l%)
 
 all: $(TARGET)
 
-$(TARGET) : $(OBJ)
-	$(AR) rc $@ $<
+$(TARGET): $(OBJ) $(JSMNOBJ)
+	$(AR) rc $@ $^
  
-$(OBJ): $(OBJDIR)/libjsmnrpc/%.o : $(SRCDIR)/%.c
-	mkdir -p $(OBJDIR)/libjsmnrpc
-	$(CC) $(CFLAGS) -I$(INCDIR)  -I$(JSMNDIR) -c -o $@ $<
+$(OBJ): $(OBJDIR)/jsmnrpc/%.o : $(SRCDIR)/%.c 
+	mkdir -p $(OBJDIR)/jsmnrpc
+	$(CC) $(CFLAGS) -I$(INCDIR) -I$(JSMNDIR) -c -o $@ $<
+
+$(JSMNOBJ): $(OBJDIR)/jsmn/%.o : $(JSMNDIR)/%.c 
+	mkdir -p $(OBJDIR)/jsmn
+	$(CC) $(CFLAGS) -I$(JSMNDIR) -c -o $@ $<
 
 test: $(OBJDIR)/examples/test.o
-	$(CC) $(LDFLAGS) $^ -o $@ -ljsmnrpc -L. -ljsmn -L$(JSMNDIR)
+	$(CC) $(LDFLAGS) $^ -o $@ -ljsmnrpc -L.
 
 $(OBJDIR)/examples/test.o: examples/test.c
 	mkdir -p $(OBJDIR)/examples
@@ -42,3 +51,6 @@ $(OBJDIR)/examples/test.o: examples/test.c
 .PHONY : clean
 clean:
 	rm -rf $(TARGET) $(OBJDIR) libjsmnrpc.a test
+
+print-%: ; @$(error $* is $($*))
+
