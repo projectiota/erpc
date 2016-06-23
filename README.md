@@ -1,7 +1,7 @@
 ## Jsmnrpc
 Minimal JSON RPC library based on [Jsmn](https://github.com/zserge/jsmn).
 
-It has no dependencies and fits in one C file, suitable for embbeding in constrained devices.
+It has no other dependencies than Jsmn and fits in one C file, suitable for embbeding in constrained devices.
 
 ## Install
 ### TL;DR
@@ -10,7 +10,7 @@ It has no dependencies and fits in one C file, suitable for embbeding in constra
 git clone --recursive https://github.com/projectiota/jsmnrpc && cd jsmnrpc
 ```
 
-### Prepare the Jsmn Dependency
+### Jsmn Dependency
 Jsmnrpc depends on [Jsmn](https://github.com/zserge/jsmn). Jsmn code is included in Jsmnrpc repo via git submodule, so that the code can be fetched via `git submodule init && git submodule update`, or git recursive clone.
 
 However, many embedded build system have Jsmn already included - like [RIOT](https://github.com/RIOT-OS/RIOT/tree/master/pkg/jsmn) or [esp-open-rtos](https://github.com/SuperHouse/esp-open-rtos/tree/master/extras/jsmn) for example. In that case you can tell the `GNU Make` where to look for `jsmn` source files:
