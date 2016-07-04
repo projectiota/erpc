@@ -8,6 +8,10 @@ Being minimal, `erpc` has a certain limitations:
 - No nested objects in parameters. This comes from Jsmn implementation, and it would be complicated to parse recursively.
 - Instead of `id`, we use `rto`, or "reply to" field. This is because `erpc` expects specific MQTT topic over which response will be published to be passed for each request. Caller can then allocate MQTT topics with incrementing integers in name, and aggregate messages in order.
 
+Erpc library was created for the needs of [Electrolink](https://github.com/projectiota/electrolink) protocol implementation, so many design decisions come from there.
+
+However, `erpc` can be used as an independant library in various applications as mentioned limitations most often are not critical in lightweight embedded context.
+
 ## Install
 ### TL;DR
 ```bash
