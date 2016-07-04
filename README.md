@@ -1,7 +1,12 @@
-## Jsmnrpc
+## Erpc
 Minimal JSON RPC library based on [Jsmn](https://github.com/zserge/jsmn).
 
 It has no other dependencies than Jsmn and fits in one C file, suitable for embbeding in constrained devices.
+
+Being minimal, `erpc` has a certain limitations:
+- Methode names are positive integers (we call these "function codes"). This is beacuse C implementation via function lookup table is simpler and faster then via hash functions (in case of methode names as strings).
+- No nested objects in parameters. This comes from Jsmn implementation, and it would be complicated to parse recursively.
+- Instead of `id`, we use `rto`, or "reply to" field. This is because `erpc` expects specific MQTT topic over which response will be published to be passed for each request. Caller can then allocate MQTT topics with incrementing integers in name, and aggregate messages in order.
 
 ## Install
 ### TL;DR
