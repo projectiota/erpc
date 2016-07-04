@@ -11,5 +11,7 @@
 
 int jrpcCall(const char* req, char* rsp);
 
+void setFncTable( void (*(*ft)[])(int argc, char *argv[]) );
+
 #endif /** JSMNRPC_H */
 

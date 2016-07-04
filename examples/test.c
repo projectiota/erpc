@@ -10,15 +10,38 @@
 
 
 const char *req =
-	"{\"jsonrpc\": \"2.0\", \"method\": \"digitalWrite\", "
-	"\"params\": [\"users\", \"wheel\", \"audio\", \"video\"], \"id\": 1}";
+	"{\"jsonrpc\": \"2.0\", \"fnc\": 1, "
+	"\"params\": [\"users\", \"wheel\", \"audio\", \"video\"], \"rto\": \"/user/1234/out\"}";
 
 char rsp[32];
+
+
+void digitalWrite(int argc, char *argv[])
+{
+    printf("FNC: digitalWrite()\n");
+}
+
+void digitalRead(int argc, char *argv[])
+{
+    printf("FNC: digitalRead()\n");
+}
+
 
 int main ()
 {
     printf("Hello test!\n");
 
+    /** ft is an array of function pointers */
+    void (*ft[])(int argc, char *argv[]) = {NULL};
+
+    /** Initialize it with our functions */
+    ft[1] = digitalWrite;
+    ft[2] = digitalRead;
+
+    /** Set elink table */
+    setFncTable(&ft);
+
+    /** Now we can call the function */
     jrpcCall(req, rsp);
 
     return 0;
