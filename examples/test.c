@@ -5,8 +5,8 @@
  * All rights not explicitly granted in the Apache license, version 2.0 are reserved.
  * See the included LICENSE file for more details.
  */
-#include "jsmnrpc.h"
 #include <stdio.h>
+#include "erpc.h"
 
 
 const char *req =
@@ -38,11 +38,11 @@ int main ()
     ft[1] = digitalWrite;
     ft[2] = digitalRead;
 
-    /** Set elink table */
-    setFncTable(&ft);
+    /** Then tell erpc library to use this lookup table */
+    erpcSetFncTable(&ft);
 
     /** Now we can call the function */
-    jrpcCall(req, rsp);
+    erpcCall(req, rsp);
 
     return 0;
 }

@@ -6,12 +6,12 @@
  * See the included LICENSE file for more details.
  */
 
-#ifndef JSMNRPC_H
-#define JSMNRPC_H
+#ifndef ERPC_H
+#define ERPC_H
 
-int jrpcCall(const char* req, char* rsp);
+int erpcCall(const char* req, char* rsp);
 
-void setFncTable( void (*(*ft)[])(int argc, char *argv[]) );
+void erpcSetFncTable( void (*(*ft)[])(int argc, char *argv[]) );
 
-#endif /** JSMNRPC_H */
+#endif /** ERPC_H */
 

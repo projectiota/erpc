@@ -10,20 +10,21 @@
 #include <string.h>
 #include <stdlib.h>
 #include "jsmn.h"
-#include "jsmnrpc.h"
+#include "erpc.h"
 
-#define JSONRPC_MAGIC_KEY "jsonrpc"
-#define JSONRPC_VER_KEY "2.0"
 #define JSONRPC_METHOD_KEY "fnc"
 #define JSONRPC_PARAMS_KEY "params"
 #define JSONRPC_REPLY_TO_KEY "rto"
 #define JSONRPC_NULL "null"
 
-char fncCodeStr[8] = {0};
-unsigned char fncCode = 0;
-char params[8][16] = {0};
-char replyTo[32] = {0};
-unsigned char paramNb = 0;
+/**
+ * Globals
+ */
+static unsigned char fncCodeStr[8] = {0};
+static unsigned char fncCode = 0;
+static unsigned char params[8][16] = {0};
+static unsigned char replyTo[32] = {0};
+static unsigned char paramNb = 0;
 
 /**
  * fncTable is the poiner to the array of function pointers.
@@ -32,6 +33,9 @@ unsigned char paramNb = 0;
  */
 void (*(*fncTable)[])(int argc, char *argv[]);
 
+/**
+ * Helper function to compare strings
+ */
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
 			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
@@ -40,7 +44,10 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	return -1;
 }
 
-int jrpcCall(const char* req, char* rsp)
+/**
+ * Parse JSON and call adequate function from lookup table
+ */
+int erpcCall(const char* req, char* rsp)
 {
     int i;
     int r;
@@ -114,8 +121,16 @@ int jrpcCall(const char* req, char* rsp)
     return 0;
 }
 
-/** Initialize function table */
-void setFncTable( void (*(*ft)[])(int argc, char *argv[]) )
+/**
+ * Set function table:
+ * user declares custom functions and stores them in the table
+ * in his high level program, then tells erpc library to use these functions.
+ *
+ * Erpc is platform agnostic - it knows only to parse JSON and call
+ * method with name `fncCode` with correct parameters. What will this method
+ * actually do, it is on user to define.
+ */
+void erpcSetFncTable( void (*(*ft)[])(int argc, char *argv[]) )
 {
     fncTable = ft;
 }

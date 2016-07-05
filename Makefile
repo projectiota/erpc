@@ -18,10 +18,10 @@ INC = $(wildcard $(INCDIR)/*.h)
 JSMNSRC = $(wildcard $(JSMNDIR)/*.c)
 JSMNINC = $(wildcard $(JSMNDIR)/*.h)
  
-OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/jsmnrpc/%.o)
+OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/erpc/%.o)
 JSMNOBJ = $(JSMNSRC:$(JSMNDIR)/%.c=$(OBJDIR)/jsmn/%.o)
 
-TARGET = libjsmnrpc.a
+TARGET = liberpc.a
  
 CC := gcc
 CFLAGS = -Wall -W -O
@@ -33,8 +33,8 @@ all: $(TARGET)
 $(TARGET): $(OBJ) $(JSMNOBJ)
 	$(AR) rc $@ $^
  
-$(OBJ): $(OBJDIR)/jsmnrpc/%.o : $(SRCDIR)/%.c 
-	mkdir -p $(OBJDIR)/jsmnrpc
+$(OBJ): $(OBJDIR)/erpc/%.o : $(SRCDIR)/%.c 
+	mkdir -p $(OBJDIR)/erpc
 	$(CC) $(CFLAGS) -I$(INCDIR) -I$(JSMNDIR) -c -o $@ $<
 
 $(JSMNOBJ): $(OBJDIR)/jsmn/%.o : $(JSMNDIR)/%.c 
@@ -42,7 +42,7 @@ $(JSMNOBJ): $(OBJDIR)/jsmn/%.o : $(JSMNDIR)/%.c
 	$(CC) $(CFLAGS) -I$(JSMNDIR) -c -o $@ $<
 
 test: $(OBJDIR)/examples/test.o
-	$(CC) $(LDFLAGS) $^ -o $@ -ljsmnrpc -L.
+	$(CC) $(LDFLAGS) $^ -o $@ -lerpc -L.
 
 $(OBJDIR)/examples/test.o: examples/test.c
 	mkdir -p $(OBJDIR)/examples
@@ -50,7 +50,7 @@ $(OBJDIR)/examples/test.o: examples/test.c
  
 .PHONY : clean
 clean:
-	rm -rf $(TARGET) $(OBJDIR) libjsmnrpc.a test
+	rm -rf $(TARGET) $(OBJDIR) liberpc.a test
 
 print-%: ; @$(error $* is $($*))
 
