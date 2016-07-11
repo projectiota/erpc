@@ -16,13 +16,13 @@ However, `erpc` can be used as an independant library in various applications as
 ### TL;DR
 ```bash
 # Clone the repo
-git clone --recursive https://github.com/projectiota/jsmnrpc && cd jsmnrpc
+git clone --recursive https://github.com/projectiota/erpc && cd erpc
 make
 ```
-Static library `libjsmnrpc.a` will be created.
+Static library `liberpc.a` will be created.
 
 ### Jsmn Dependency
-Jsmnrpc depends on [Jsmn](https://github.com/zserge/jsmn). Jsmn code is included in Jsmnrpc repo via git submodule, so that the code can be fetched via `git submodule init && git submodule update`, or git recursive clone.
+Erpc depends on [Jsmn](https://github.com/zserge/jsmn). Jsmn code is included in Erpc repo via git submodule, so that the code can be fetched via `git submodule init && git submodule update`, or git recursive clone.
 
 However, many embedded build system have Jsmn already included - like [RIOT](https://github.com/RIOT-OS/RIOT/tree/master/pkg/jsmn) or [esp-open-rtos](https://github.com/SuperHouse/esp-open-rtos/tree/master/extras/jsmn) for example. In that case you can tell the `GNU Make` where to look for `jsmn` source files:
 
