@@ -36,7 +36,7 @@ make test
 ./test
 ```
 ## Author
-Erpc was engineered by [@drasko](https://github.com/drasko).
+Erpc was engineered by [@drasko](https://github.com/drasko)
 
 ## License
 [Apache-2.0](LICENSE)
