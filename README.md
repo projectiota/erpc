@@ -36,7 +36,7 @@ make test
 ./test
 ```
 ## Author
-Erpc was engineered by [@drasko](https://github.com/drasko) for the needs of [Electrolink](https://github.com/projectiota/electrolink) project.
+Erpc was engineered by [@drasko](https://github.com/drasko).
 
 ## License
 [Apache-2.0](LICENSE)
