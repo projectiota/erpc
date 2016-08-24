@@ -35,6 +35,8 @@ make JSMNDIR=<path_to_jsmn>
 make test
 ./test
 ```
+## Author
+Erpc was engineered by [@drasko](https://github.com/drasko) for the needs of [Electrolink](https://github.com/projectiota/electrolink) project.
 
 ## License
 [Apache-2.0](LICENSE)
