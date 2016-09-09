@@ -29,8 +29,7 @@ int main ()
 {
     printf("Hello test!\n");
 
-
-    /** Initialize it with our functions */
+    /** Initialize function look-up table with our functions */
     erpcAddFunction("digitalWrite", digitalWrite);
     erpcAddFunction("digitalRead", digitalRead);
 
