@@ -4,13 +4,14 @@ Minimal JSON RPC library based on [Jsmn](https://github.com/zserge/jsmn).
 It has no other dependencies than Jsmn and fits in one C file, suitable for embbeding in constrained devices.
 
 Being minimal, `erpc` has certain limitations:
-- Method names are positive integers (we call these "function codes"). This is beacuse C implementation via function lookup table is simpler and faster then via hash functions (in case of method names as strings).
 - No nested objects in parameters. This comes from Jsmn implementation, and it would be complicated to parse recursively.
-- Instead of `id`, we use `rto`, or "reply to" field. This is because `erpc` expects specific MQTT topic over which response will be published to be passed for each request. Caller can then allocate MQTT topics with incrementing integers in name, and aggregate messages in order.
+- We do not use `id` field, as all calls in Electrolink are blocking: client calls the functions and waits until it gets the response (via MQTT publish)
 
 Erpc library was created for the needs of [Electrolink](https://github.com/projectiota/electrolink) protocol implementation, so many design decisions come from there.
 
 However, `erpc` can be used as an independant library in various applications as mentioned limitations most often are not critical in lightweight embedded context.
+
+> We use 1KB hash map for function look-up table. If it takes too much memory, it chould be possible to lower it's size in the code without collisions (if number of attached fncs is not big)
 
 ## Install
 ### TL;DR
