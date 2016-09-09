@@ -11,7 +11,7 @@ Erpc library was created for the needs of [Electrolink](https://github.com/proje
 
 However, `erpc` can be used as an independant library in various applications as mentioned limitations most often are not critical in lightweight embedded context.
 
-> We use 1KB hash map for function look-up table. If it takes too much memory, it chould be possible to lower it's size in the code without collisions (if number of attached fncs is not big)
+> We use 1KB hash map for function look-up table. If it takes too much memory, it should be possible to reduce it's size in the code without collisions (if number of attached fncs is not big)
 
 ## Install
 ### TL;DR
