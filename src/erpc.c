@@ -12,7 +12,7 @@
 #include "jsmn.h"
 #include "erpc.h"
 
-#define JSONRPC_METHOD_KEY "fnc"
+#define JSONRPC_METHOD_KEY "method"
 #define JSONRPC_PARAMS_KEY "params"
 #define JSONRPC_REPLY_TO_KEY "rto"
 #define JSONRPC_NULL "null"
@@ -20,18 +20,31 @@
 /**
  * Globals
  */
-static unsigned char fncCodeStr[8] = {0};
-static unsigned char fncCode = 0;
+static unsigned char method[8] = {0};
+static unsigned char fncIdx = 0;
 static unsigned char params[8][16] = {0};
 static unsigned char replyTo[32] = {0};
 static unsigned char paramNb = 0;
 
 /**
- * fncTable is the poiner to the array of function pointers.
- * When initialized, this poiner points to the table (array)
- * of function pointers that are installed by the user.
+ * fncTable is an array of function pointers.
+ * Function pointers are installed by the user.
  */
-void (*(*fncTable)[])(int argc, char *argv[]);
+#define FNC_TABLE_SIZE 1024
+void (*fncTable[FNC_TABLE_SIZE])(int argc, char *argv[]) = {NULL};
+
+/**
+ * Fowler/Noll/Vo (FNV) hash function, variant 1a
+ */
+static size_t fnv1a_hash(const unsigned char* cp)
+{
+    size_t hash = 0x811c9dc5;
+    while (*cp) {
+        hash ^= (unsigned char) *cp++;
+        hash *= 0x01000193;
+    }
+    return hash;
+}
 
 /**
  * Helper function to compare strings
@@ -47,7 +60,7 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 /**
  * Parse JSON and call adequate function from lookup table
  */
-int erpcCall(const char* req, char* rsp)
+int erpcCall(const char* req)
 {
     int i;
     int r;
@@ -76,11 +89,13 @@ int erpcCall(const char* req, char* rsp)
             int size = t[i+1].end-t[i+1].start;
         
             /* We may use strndup() to fetch string value */
-            memcpy(fncCodeStr, req + t[i+1].start, t[i+1].end-t[i+1].start);
-            fncCodeStr[size] = '\0';
-            fncCode = atoi(fncCodeStr);
+            memcpy(method, req + t[i+1].start, t[i+1].end-t[i+1].start);
+            method[size] = '\0';
+            printf("- Method: %s\n", method);
 
-            printf("- MethodCode: %d\n", fncCode);
+            fncIdx = fnv1a_hash(method) % FNC_TABLE_SIZE;
+
+            printf("- Function Table Index: %d\n", fncIdx);
             i++;
         } else if (jsoneq(req, &t[i], JSONRPC_PARAMS_KEY) == 0) {
             int j;
@@ -117,7 +132,7 @@ int erpcCall(const char* req, char* rsp)
     }
 
     /** Call the function */
-    (*fncTable)[fncCode](paramNb, params);
+    fncTable[fncIdx](paramNb, (char **)params);
     return 0;
 }
 
@@ -127,11 +142,12 @@ int erpcCall(const char* req, char* rsp)
  * in his high level program, then tells erpc library to use these functions.
  *
  * Erpc is platform agnostic - it knows only to parse JSON and call
- * method with name `fncCode` with correct parameters. What will this method
+ * method with name `fncIdx` with correct parameters. What will this method
  * actually do, it is on user to define.
  */
-void erpcSetFncTable( void (*(*ft)[])(int argc, char *argv[]) )
+void erpcAddFunction(char* fncName, void (*f)(int argc, char *argv[]))
 {
-    fncTable = ft;
+	fncIdx = fnv1a_hash((const unsigned char *)fncName) % FNC_TABLE_SIZE;
+	fncTable[fncIdx] = f;
 }
 

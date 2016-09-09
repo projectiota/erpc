@@ -10,10 +10,8 @@
 
 
 const char *req =
-	"{\"jsonrpc\": \"2.0\", \"fnc\": 1, "
+	"{\"method\": \"digitalWrite\", "
 	"\"params\": [\"users\", \"wheel\", \"audio\", \"video\"], \"rto\": \"/user/1234/out\"}";
-
-char rsp[32];
 
 
 void digitalWrite(int argc, char *argv[])
@@ -31,18 +29,13 @@ int main ()
 {
     printf("Hello test!\n");
 
-    /** ft is an array of function pointers */
-    void (*ft[])(int argc, char *argv[]) = {NULL};
 
     /** Initialize it with our functions */
-    ft[1] = digitalWrite;
-    ft[2] = digitalRead;
-
-    /** Then tell erpc library to use this lookup table */
-    erpcSetFncTable(&ft);
+    erpcAddFunction("digitalWrite", digitalWrite);
+    erpcAddFunction("digitalRead", digitalRead);
 
     /** Now we can call the function */
-    erpcCall(req, rsp);
+    erpcCall(req);
 
     return 0;
 }

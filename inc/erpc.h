@@ -9,9 +9,8 @@
 #ifndef ERPC_H
 #define ERPC_H
 
-int erpcCall(const char* req, char* rsp);
-
-void erpcSetFncTable( void (*(*ft)[])(int argc, char *argv[]) );
+int erpcCall(const char* req);
+void erpcAddFunction(char* fncName, void (*f)(int argc, char *argv[]));
 
 #endif /** ERPC_H */
 
