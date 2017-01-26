@@ -20,9 +20,9 @@
 /**
  * Globals
  */
-static unsigned char method[8] = {0};
+static unsigned char method[16] = {0};
 static unsigned char fncIdx = 0;
-static unsigned char params[8][16] = {0};
+static unsigned char params[8][16] = {{0}};
 static unsigned char replyTo[32] = {0};
 static unsigned char paramNb = 0;
 
@@ -69,7 +69,7 @@ int erpcCall(const char* req)
 
     jsmn_init(&p);
 
-    printf(req);
+    printf("%s\n", req);
     r = jsmn_parse(&p, req, strlen(req), t, sizeof(t)/sizeof(t[0]));
     if (r < 0) {
         printf("Failed to parse JSON: %d\n", r);
