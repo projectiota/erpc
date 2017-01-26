@@ -9,7 +9,7 @@
 #ifndef ERPC_H
 #define ERPC_H
 
-typedef unsigned char PARAMS_t [8][16];
+typedef char PARAMS_t [8][16];
 int erpcCall(const char* req);
 void erpcAddFunction(char* fncName, void (*f)(int argc, char *argv[]));
 
