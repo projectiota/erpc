@@ -22,7 +22,7 @@
  */
 static unsigned char method[16] = {0};
 static unsigned char fncIdx = 0;
-static unsigned char params[8][16] = {{0}};
+PARAMS_t params = {{0}};
 static unsigned char replyTo[32] = {0};
 static unsigned char paramNb = 0;
 

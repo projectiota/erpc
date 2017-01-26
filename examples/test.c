@@ -6,6 +6,8 @@
  * See the included LICENSE file for more details.
  */
 #include <stdio.h>
+#include <stdint.h>
+#include <string.h>
 #include "erpc.h"
 
 
@@ -16,7 +18,14 @@ const char *req =
 
 void digitalWrite(int argc, char *argv[])
 {
+    uint8_t i = 0;
+    PARAMS_t params = {{0}};
+
+    memcpy(params, argv, sizeof(PARAMS_t));
+
     printf("FNC: digitalWrite()\n");
+    for (i = 0; i < argc; i++)
+        printf("%s\n", params[i]);
 }
 
 void digitalRead(int argc, char *argv[])
