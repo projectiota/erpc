@@ -22,7 +22,7 @@
  */
 static unsigned char method[16] = {0};
 static unsigned char fncIdx = 0;
-PARAMS_t params = {{0}};
+JSMN_PARAMS_t params = {{0}};
 static unsigned char replyTo[32] = {0};
 static unsigned char paramNb = 0;
 
@@ -30,8 +30,7 @@ static unsigned char paramNb = 0;
  * fncTable is an array of function pointers.
  * Function pointers are installed by the user.
  */
-#define FNC_TABLE_SIZE 1024
-void (*fncTable[FNC_TABLE_SIZE])(int argc, char *argv[]) = {NULL};
+void (*fncTable[FNC_TABLE_SIZE])(int argc, JSMN_PARAMS_t argv) = {NULL};
 
 /**
  * Fowler/Noll/Vo (FNV) hash function, variant 1a
@@ -50,11 +49,11 @@ static size_t fnv1a_hash(const unsigned char* cp)
  * Helper function to compare strings
  */
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
-	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
-			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
-		return 0;
-	}
-	return -1;
+    if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
+            strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
+        return 0;
+    }
+    return -1;
 }
 
 /**
@@ -69,7 +68,6 @@ int erpcCall(const char* req)
 
     jsmn_init(&p);
 
-    printf("%s\n", req);
     r = jsmn_parse(&p, req, strlen(req), t, sizeof(t)/sizeof(t[0]));
     if (r < 0) {
         printf("Failed to parse JSON: %d\n", r);
@@ -132,7 +130,7 @@ int erpcCall(const char* req)
     }
 
     /** Call the function */
-    fncTable[fncIdx](paramNb, (char **)params);
+    fncTable[fncIdx](paramNb, params);
     return 0;
 }
 
@@ -145,9 +143,8 @@ int erpcCall(const char* req)
  * method with name `fncIdx` with correct parameters. What will this method
  * actually do, it is on user to define.
  */
-void erpcAddFunction(char* fncName, void (*f)(int argc, char *argv[]))
+void erpcAddFunction(char* fncName, void (*f)(int argc, JSMN_PARAMS_t argv))
 {
-	fncIdx = fnv1a_hash((const unsigned char *)fncName) % FNC_TABLE_SIZE;
-	fncTable[fncIdx] = f;
+    fncIdx = fnv1a_hash((const unsigned char *)fncName) % FNC_TABLE_SIZE;
+    fncTable[fncIdx] = f;
 }
-

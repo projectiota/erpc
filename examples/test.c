@@ -16,19 +16,19 @@ const char *req =
 	"\"params\": [\"users\", \"wheel\", \"audio\", \"video\"], \"rto\": \"/user/1234/out\"}";
 
 
-void digitalWrite(int argc, char *argv[])
+void digitalWrite(int argc, JSMN_PARAMS_t argv)
 {
     uint8_t i = 0;
-    PARAMS_t params = {{0}};
+    JSMN_PARAMS_t params = {{0}};
 
-    memcpy(params, argv, sizeof(PARAMS_t));
+    memcpy(params, argv, sizeof(JSMN_PARAMS_t));
 
     printf("FNC: digitalWrite()\n");
     for (i = 0; i < argc; i++)
-        printf("%s\n", params[i]);
+        printf("* %s\n", params[i]);
 }
 
-void digitalRead(int argc, char *argv[])
+void digitalRead(int argc, JSMN_PARAMS_t argv)
 {
     printf("FNC: digitalRead()\n");
 }
